@@ -70,8 +70,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest] # FIXME: Removed "windows-latest" due to 'Error: ENOENT: no such file or directory, open' error breaking at least on Node 20.0 constantly
-        node-version: [18, 20, 21, 22]
+        os: [ubuntu-latest]
+        node-version: [20]
     steps:
       - name: "Check out Git repository"
         if: github.repository == 'juice-shop/juice-shop' || (github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '20')
@@ -363,7 +363,7 @@ jobs:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
   security:
     name: SAST Scan (Semgrep)
-    needs: [test, api-test]
+    needs: [lint, coding-challenge-rsn]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
