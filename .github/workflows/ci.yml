@@ -367,8 +367,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: returntocorp/semgrep-action@v1
+
+      - name: Setup Python 3
+        uses: actions/setup-python@v4
         with:
-          config: p/ci
-          args: --error
+          python-version: '3.x'
+
+      - name: Install Semgrep
+        run: python -m pip install semgrep
+
+      - name: Run Semgrep scan
+        run: semgrep --config=p/ci --error .
+
            
