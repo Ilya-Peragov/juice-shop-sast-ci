@@ -362,15 +362,15 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
   security:
-  name: SAST Scan (Semgrep)
-  needs: [lint, coding-challenge-rsn, test, api-test]
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    name: SAST Scan (Semgrep)
+    needs: [lint, coding-challenge-rsn, test, api-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Run Semgrep
-      uses: returntocorp/semgrep-action@v1
-      with:
-        config: p/ci
-        args: --error           
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/ci
+          args: --error           
