@@ -1,6 +1,8 @@
 name: "CI/CD Pipeline"
 on:
   push:
+    branches:
+      - master
     branches-ignore:
       - l10n_develop
       - gh-pages
@@ -12,6 +14,8 @@ on:
     tags-ignore:
       - '*'
   pull_request:
+    branches:
+      - master
     paths-ignore:
       - '*.md'
       - 'LICENSE'
@@ -360,3 +364,16 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+  security:
+  name: SAST Scan (Semgrep)
+  needs: [lint, coding-challenge-rsn, test, api-test]
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run Semgrep
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: p/ci
+        args: --error           
